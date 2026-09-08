@@ -1272,23 +1272,22 @@ The following tables record single instruction relocations and relocations that 
   +------------+------------+------------------------------+------------+---------------------------------------------------------------------+
   | ELF64 Code | ELF32 Code | Name                         | Operation  | Comment                                                             |
   +============+============+==============================+============+=====================================================================+
-  | 287        | 22         | R\_<CLS>\_MOVW\_PREL\_G0     | S+A-P      | Set a MOV[NZ]immediate field to bits [15:0] of X (see notes below)  |
+  | 287        | 22         | R\_<CLS>\_MOVW\_PREL\_G0     | S+A-P      | Set a MOV[NZ]immediate field to bits [15:0] of X [#movw-prel]_      |
   +------------+------------+------------------------------+------------+---------------------------------------------------------------------+
   | 288        | 23         | R\_<CLS>\_MOVW\_PREL\_G0\_NC | S+A-P      | Set a MOVK immediate field to bits [15:0] of X. No overflow check   |
   +------------+------------+------------------------------+------------+---------------------------------------------------------------------+
-  | 289        | 24         | R\_<CLS>\_MOVW\_PREL\_G1     | S+A-P      | Set a MOV[NZ]immediate field to bits [31:16] of X (see notes below) |
+  | 289        | 24         | R\_<CLS>\_MOVW\_PREL\_G1     | S+A-P      | Set a MOV[NZ]immediate field to bits [31:16] of X [#movw-prel]_     |
   +------------+------------+------------------------------+------------+---------------------------------------------------------------------+
   | 290        | \-         | R\_<CLS>\_MOVW\_PREL\_G1\_NC | S+A-P      | Set a MOVK immediate field to bits [31:16] of X. No overflow check  |
   +------------+------------+------------------------------+------------+---------------------------------------------------------------------+
-  | 291        | \-         | R\_<CLS>\_MOVW\_PREL\_G2     | S+A-P      | Set a MOV[NZ]immediate value to bits [47:32] of X (see notes below) |
+  | 291        | \-         | R\_<CLS>\_MOVW\_PREL\_G2     | S+A-P      | Set a MOV[NZ]immediate value to bits [47:32] of X [#movw-prel]_     |
   +------------+------------+------------------------------+------------+---------------------------------------------------------------------+
   | 292        | \-         | R\_<CLS>\_MOVW\_PREL\_G2\_NC | S+A-P      | Set a MOVK immediate field to bits [47:32] of X. No overflow check  |
   +------------+------------+------------------------------+------------+---------------------------------------------------------------------+
-  | 293        | \-         | R\_<CLS>\_MOVW\_PREL\_G3     | S+A-P      | Set a MOV[NZ]immediate value to bits [63:48] of X (see notes below) |
+  | 293        | \-         | R\_<CLS>\_MOVW\_PREL\_G3     | S+A-P      | Set a MOV[NZ]immediate value to bits [63:48] of X [#movw-prel]_     |
   +------------+------------+------------------------------+------------+---------------------------------------------------------------------+
 
-.. note::
-
+.. [#movw-prel]
     Non-checking (``_NC``) forms relocate ``MOVK``; checking forms relocate ``MOVN`` or ``MOVZ``.
 
     ``X >= 0``: Set the instruction to ``MOVZ`` and its immediate value to the selected bits of X; for relocation ``R_..._Gn``, check in ELF64 that X < {``G0:`` 2\ :sup:`16`, ``G1:`` 2\ :sup:`32`, ``G2:`` 2\ :sup:`48`} (no check for ``R_..._G3``); in ELF32 only check X < 2\ :sup:`16` for ``R_..._G0``.
@@ -1583,19 +1582,19 @@ Local Dynamic thread-local storage model
   +-------------+------------+----------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
   | 519         | 85         | R\_<CLS>\_TLSLD\_ADD\_LO12\_NC               | G(GLDM(S))                | Set an ADD immediate field to bits [11:0] of X. No overflow check                              |
   +-------------+------------+----------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
-  | 520         | \-         | R\_<CLS>\_TLSLD\_MOVW\_G1                    | G(GLDM(S)) - GOT          | Set a MOV[NZ] immediate field to bits [31:16] of X (see notes below)                           |
+  | 520         | \-         | R\_<CLS>\_TLSLD\_MOVW\_G1                    | G(GLDM(S)) - GOT          | Set a MOV[NZ] immediate field to bits [31:16] of X [#tlsld-movw]_                              |
   +-------------+------------+----------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
   | 521         | \-         | R\_<CLS>\_TLSLD\_MOVW\_G0\_NC                | G(GLDM(S)) - GOT          | Set a MOVK immediate field to bits [15:0] of X. No overflow check                              |
   +-------------+------------+----------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
   | 522         | 86         | R\_<CLS>\_TLSLD\_LD\_PREL19                  | G(GLDM(S)) - P            | Set a load-literal immediate field to bits [20:2] of X; check –2\ :sup:`20` <= X < 2\ :sup:`20`|
   +-------------+------------+----------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
-  | 523         | \-         | R\_<CLS>\_TLSLD\_MOVW\_DTPREL\_G2            | DTPREL(S+A)               | Set a MOV[NZ] immediate field to bits [47:32] of X (see notes below)                           |
+  | 523         | \-         | R\_<CLS>\_TLSLD\_MOVW\_DTPREL\_G2            | DTPREL(S+A)               | Set a MOV[NZ] immediate field to bits [47:32] of X [#tlsld-movw]_                              |
   +-------------+------------+----------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
-  | 524         | 87         | R\_<CLS>\_TLSLD\_MOVW\_DTPREL\_G1            | DTPREL(S+A)               | Set a MOV[NZ] immediate field to bits [31:16] of X (see notes below)                           |
+  | 524         | 87         | R\_<CLS>\_TLSLD\_MOVW\_DTPREL\_G1            | DTPREL(S+A)               | Set a MOV[NZ] immediate field to bits [31:16] of X [#tlsld-movw]_                              |
   +-------------+------------+----------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
   | 525         | \-         | R\_<CLS>\_TLSLD\_MOVW\_DTPREL\_G1\_NC        | DTPREL(S+A)               | Set a MOVK immediate field to bits [31:16] of X. No overflow check                             |
   +-------------+------------+----------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
-  | 526         | 88         | R\_<CLS>\_TLSLD\_MOVW\_DTPREL\_G0            | DTPREL(S+A)               | Set a MOV[NZ] immediate field to bits [15:0] of X (see notes below)                            |
+  | 526         | 88         | R\_<CLS>\_TLSLD\_MOVW\_DTPREL\_G0            | DTPREL(S+A)               | Set a MOV[NZ] immediate field to bits [15:0] of X [#tlsld-movw]_                               |
   +-------------+------------+----------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
   | 527         | 89         | R\_<CLS>\_TLSLD\_MOVW\_DTPREL\_G0\_NC        | DTPREL(S+A)               | Set a MOVK immediate field to bits [15:0] of X. No overflow check                              |
   +-------------+------------+----------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
@@ -1626,8 +1625,7 @@ Local Dynamic thread-local storage model
   | 573         | 102        | R\_<CLS>\_TLSLD\_LDST128\_DTPREL\_LO12\_NC   | DTPREL(S+A)               | Set a LD/ST offset field to bits [11:4] of X. No overflow check                                |
   +-------------+------------+----------------------------------------------+---------------------------+------------------------------------------------------------------------------------------------+
 
-.. note::
-
+.. [#tlsld-movw]
     Non-checking (``_NC``) MOVW forms relocate ``MOVK``; checking forms relocate ``MOVN`` or ``MOVZ``.
 
     ``X >= 0``: Set the instruction to ``MOVZ`` and its immediate value to the selected bits S; for relocation ``R_..._Gn``, check in ELF64 that X < {``G0:`` 2\ :sup:`16`, ``G1:`` 2\ :sup:`32`, ``G2:`` 2\ :sup:`48`} (no check for ``R_..._G3``); in ELF32 only check that X < 2\ :sup:`16` for ``R_..._G0``.
@@ -1647,7 +1645,7 @@ Initial Exec thread-local storage model
   +------------+------------+--------------------------------------------+--------------------------------+------------------------------------------------------------------------------------------+
   | ELF64 Code | ELF32 Code | Name                                       | Operation                      | Comment                                                                                  |
   +============+============+============================================+================================+==========================================================================================+
-  | 539        | \-         | R\_<CLS>\_TLSIE\_MOVW\_GOTTPREL\_G1        | G(GTPREL(S)) - GOT             | Set a MOV[NZ] immediate field to bits [31:16] of X (see notes below)                     |
+  | 539        | \-         | R\_<CLS>\_TLSIE\_MOVW\_GOTTPREL\_G1        | G(GTPREL(S)) - GOT             | Set a MOV[NZ] immediate field to bits [31:16] of X [#tlsie-movw]_                        |
   +------------+------------+--------------------------------------------+--------------------------------+------------------------------------------------------------------------------------------+
   | 540        | \-         | R\_<CLS>\_TLSIE\_MOVW\_GOTTPREL\_G0\_NC    | G(GTPREL(S)) - GOT             | Set MOVK immediate to bits [15:0] of X. No overflow check                                |
   +------------+------------+--------------------------------------------+--------------------------------+------------------------------------------------------------------------------------------+
@@ -1660,7 +1658,7 @@ Initial Exec thread-local storage model
   | 543        | 105        | R\_<CLS>\_TLSIE\_LD\_GOTTPREL\_PREL19      | G(GTPREL(S)) – P               | Set a load-literal immediate to bits [20:2] of X; check –2\ :sup:`20` <= X < 2\ :sup:`20`|
   +------------+------------+--------------------------------------------+--------------------------------+------------------------------------------------------------------------------------------+
 
-.. note::
+.. [#tlsie-movw]
     Non-checking (``_NC``) ``MOVW`` forms relocate ``MOVK``; checking forms relocate ``MOVN`` or ``MOVZ``.
 
 
@@ -1674,13 +1672,13 @@ Local Exec thread-local storage model
   +------------+------------+--------------------------------------------+-------------+------------------------------------------------------------------------------+
   | ELF64 Code | ELF32 Code | Name                                       | Operation   | Comment                                                                      |
   +============+============+============================================+=============+==============================================================================+
-  | 544        | \-         | R\_<CLS>\_TLSLE\_MOVW\_TPREL\_G2           | TPREL(S+A)  | Set a MOV[NZ] immediate field to bits [47:32] of X (see notes below)         |
+  | 544        | \-         | R\_<CLS>\_TLSLE\_MOVW\_TPREL\_G2           | TPREL(S+A)  | Set a MOV[NZ] immediate field to bits [47:32] of X [#tlsle-movw]_            |
   +------------+------------+--------------------------------------------+-------------+------------------------------------------------------------------------------+
-  | 545        | 106        | R\_<CLS>\_TLSLE\_MOVW\_TPREL\_G1           | TPREL(S+A)  | Set a MOV[NZ] immediate field to bits [31:16] of X (see notes below)         |
+  | 545        | 106        | R\_<CLS>\_TLSLE\_MOVW\_TPREL\_G1           | TPREL(S+A)  | Set a MOV[NZ] immediate field to bits [31:16] of X [#tlsle-movw]_            |
   +------------+------------+--------------------------------------------+-------------+------------------------------------------------------------------------------+
   | 546        | \-         | R\_<CLS>\_TLSLE\_MOVW\_TPREL\_G1\_NC       | TPREL(S+A)  | Set a MOVK immediate field to bits [31:16] of X. No overflow check           |
   +------------+------------+--------------------------------------------+-------------+------------------------------------------------------------------------------+
-  | 547        | 107        | R\_<CLS>\_TLSLE\_MOVW\_TPREL\_G0           | TPREL(S+A)  | Set a MOV[NZ] immediate field to bits [15:0] of X (see notes below)          |
+  | 547        | 107        | R\_<CLS>\_TLSLE\_MOVW\_TPREL\_G0           | TPREL(S+A)  | Set a MOV[NZ] immediate field to bits [15:0] of X [#tlsle-movw]_             |
   +------------+------------+--------------------------------------------+-------------+------------------------------------------------------------------------------+
   | 548        | 108        | R\_<CLS>\_TLSLE\_MOVW\_TPREL\_G0\_NC       | TPREL(S+A)  | Set a MOVK immediate field to bits [15:0] of X. No overflow check            |
   +------------+------------+--------------------------------------------+-------------+------------------------------------------------------------------------------+
@@ -1711,8 +1709,7 @@ Local Exec thread-local storage model
   | 571        | 121        | R\_<CLS>\_TLSLE\_LDST128\_TPREL\_LO12\_NC  | TPREL(S+A)  | Set a LD/ST offset field to bits [11:4] of X. No overflow check              |
   +------------+------------+--------------------------------------------+-------------+------------------------------------------------------------------------------+
 
-.. note::
-
+.. [#tlsle-movw]
     Non-checking (``_NC``) ``MOVW`` forms relocate ``MOVK``; checking forms relocate ``MOVN`` or ``MOVZ``.
 
     For scaled-addressing relocations (554-559, 570 and 571) or [112-121] a linker should check that X is a multiple of the datum size.
@@ -1742,7 +1739,7 @@ Thread-local storage descriptors
   | 564        | 126        | R\_<CLS>\_TLSDESC\_ADD\_LO12    | G(GTLSDESC(S))                   | Set an ADD immediate field to bits [11:0] of X. No overflow check.                           |
   +------------+------------+---------------------------------+----------------------------------+----------------------------------------------------------------------------------------------+
   | 565        | \-         | R\_<CLS>\_TLSDESC\_OFF\_G1      | G(GTLSDESC(S)) - GOT             | Set a MOV[NZ] immediate field to bits [31:16] of X; check -2\ :sup:`32` <= X < 2\ :sup:`32`. |
-  |            |            |                                 |                                  | See notes below.                                                                             |
+  |            |            |                                 |                                  | [#tlsdesc-movw]_                                                                             |
   +------------+------------+---------------------------------+----------------------------------+----------------------------------------------------------------------------------------------+
   | 566        | \-         | R\_<CLS>\_TLSDESC\_OFF\_G0\_NC  | G(GTLSDESC(S)) - GOT             | Set a MOVK immediate field to bits [15:0] of X. No overflow check.                           |
   +------------+------------+---------------------------------+----------------------------------+----------------------------------------------------------------------------------------------+
@@ -1757,8 +1754,7 @@ Thread-local storage descriptors
   +------------+------------+---------------------------------+----------------------------------+----------------------------------------------------------------------------------------------+
 
 
-.. note::
-
+.. [#tlsdesc-movw]
     ``X >= 0``: Set the instruction to MOVZ and its immediate value to the selected bits of X.
 
     ``X < 0``: Set the instruction to MOVN and its immediate value to NOT (selected bits of X).
@@ -1776,16 +1772,16 @@ A data relocation is required to describe the location of a TLS variable in debu
 .. table:: TLS data relocations
 
   +------------+------------+-----------------------------+------------------------------------+-------------------------------------------+
-  | 1028       | 184        | R\_<CLS>\_TLS\_IMPDEF1      |                                    | See note below                            |
+  | 1028       | 184        | R\_<CLS>\_TLS\_IMPDEF1      |                                    | [#tls-dtprel]_                            |
   +------------+------------+-----------------------------+------------------------------------+-------------------------------------------+
-  | 1029       | 185        | R\_<CLS>\_TLS\_IMPDEF2      |                                    | See note below                            |
+  | 1029       | 185        | R\_<CLS>\_TLS\_IMPDEF2      |                                    | [#tls-dtprel]_                            |
   +------------+------------+-----------------------------+------------------------------------+-------------------------------------------+
-  |            |            | R\_<CLS>\_TLS\_DTPREL       | DTPREL(S+A)                        | See note below                            |
+  |            |            | R\_<CLS>\_TLS\_DTPREL       | DTPREL(S+A)                        | [#tls-dtprel]_                            |
   +------------+------------+-----------------------------+------------------------------------+-------------------------------------------+
 
 It is implementation defined whether ``R_<CLS>_TLS_IMPDEF1`` implements ``R_<CLS>_TLS_DTPREL`` and ``R_<CLS>_TLS_IMPDEF2`` implements ``R_<CLS>_TLS_DTPMOD`` or whether ``R_<CLS>_TLS_IMPDEF1`` implements ``R_<CLS>_TLS_DTPMOD`` and ``R_<CLS>_TLS_IMPDEF2`` implements ``R_<CLS>_TLS_DTPREL``; a platform must document its choice\ [#aaelf64-f1]_.
 
-.. note::
+.. [#tls-dtprel]
    ``R_<CLS>_TLS_DTPREL`` is both a static and dynamic relocation. When used as
    a static relocation ``S`` must be fully resolved at static link time to a
    symbol definition in the same module as the relocation.
